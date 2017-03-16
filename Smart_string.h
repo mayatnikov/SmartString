@@ -104,7 +104,7 @@ public:
 	Smart_string operator+(Smart_string str);
 	Smart_string operator=(char *str);
 	Smart_string* operator=(Smart_string &str);
-        Smart_string refObj();
+        Smart_string* refObj();
         
         void setBuffer(const char *);
 	// операторы сравнения

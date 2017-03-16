@@ -206,25 +206,26 @@ void test9() {
         cout << "s0 "; 
         s0.print();
         
-       SS *s1 = &s0;
+       SS* s1 = &s0;
        // s1=s0;
        cout << "s1 "; 
        s1->print();
         
-       SS s2 = s0;
+       SS* s2 = s0.refObj();
        cout << "s2 "; 
-       s2.print();
+       s2->print();
+       
        cout << "---\n"; 
        cout << "s0 "; s0.print();
        cout << "s1 "; s1->print();
-       cout << "s2 "; s2.print();
+       cout << "s2 "; s2->print();
        
        cout << "---\n"; 
        s0.setBuffer("-------------------------------- Это новое значение строки заданное через переменную s1");
  
        cout << "s0 "; s0.print();
        cout << "s1 "; s1->print();
-       cout << "s2 "; s2.print();
+       cout << "s2 "; s2->print();
        
 }
 

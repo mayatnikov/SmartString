@@ -192,12 +192,6 @@ SS SS::operator+(Smart_string str)
  	return temp;
 }
 
-// Присваивание объектов класса
-SS SS::refObj()
-{
-    used++;
-    return *this;
-}
 
 // Замена содержимого buffer Smart_строки
 void SS::setBuffer(const char *str)
@@ -219,6 +213,13 @@ SS* SS::operator=(SS &obj) {
     obj.used++;
     return &obj;
 }
+
+SS* SS::refObj() {
+    cout << "+++++++---+++++++";
+    used++;
+    return  this;
+}
+
 
 // Присваивание строки с завершающим нулем
 SS SS::operator=(char *str)
