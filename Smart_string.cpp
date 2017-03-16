@@ -37,6 +37,7 @@ void SS::check_members() {
 
 SS::Smart_string() 
 {
+    used=1;
     check_members();
     buffer = (char *)malloc(1);
     strcpy(buffer,"");
@@ -45,6 +46,7 @@ SS::Smart_string()
 }
 
 SS::SS(const Smart_string &ss) {
+    used=1;
     check_members();
     buffer = (char *) malloc(ss.line_len + 1);
     strcpy(buffer, ss.buffer);
@@ -53,6 +55,7 @@ SS::SS(const Smart_string &ss) {
 }
 
 SS::SS(const char *s1) {
+    used=1;
     check_members();
     size_t len = strlen(s1);
     if (len > MAXLEN) {
@@ -69,8 +72,11 @@ SS::SS(const char *s1) {
 
 SS::~Smart_string() 
 {
-	free(buffer);
+    if(used>1) used--;
+    else {
+        free(buffer);
         dec();
+    }
 }
 
 char *SS::getValue() 
@@ -187,12 +193,32 @@ SS SS::operator+(Smart_string str)
 }
 
 // Присваивание объектов класса
-SS SS::operator=(SS ss)
+SS SS::refObj()
 {
-	SS temp(ss.getValue());
-	return temp;
+    used++;
+    return *this;
 }
 
+// Замена содержимого buffer Smart_строки
+void SS::setBuffer(const char *str)
+{
+	size_t len = strlen(str);
+	if(strlen(str) > MAXLEN) {
+		fprintf( stderr, "оператор присваивания: строка дл=( %lu  ) длинней допустимых %d  символов - не обрабатываем! \n", len, MAXLEN);
+		throw SSE("Operator = has very long input string");
+	}
+	else {
+		free( buffer)	;
+		buffer = (char *)malloc(len+1);
+                strcpy(buffer,str);
+    	}
+}
+
+SS* SS::operator=(SS &obj) {
+    cout << "++++++++++++++";
+    obj.used++;
+    return &obj;
+}
 
 // Присваивание строки с завершающим нулем
 SS SS::operator=(char *str)
@@ -213,7 +239,7 @@ SS SS::operator=(char *str)
 
 void SS::print() 
 {
-	cout << "SS: val=["<< buffer << "] len=" << line_len << " n_members:"<< n_members<<endl;
+	cout << "SS: val=["<< buffer << "] len=" << line_len << " used:"<< used <<  " n_members:" << n_members <<endl;
 }
 
 void SS::show_str() {

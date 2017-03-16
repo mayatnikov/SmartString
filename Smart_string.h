@@ -82,7 +82,9 @@ class Smart_string // Объект класса - строка
 /* В числе контроля за ошибками должен быть контроль выхода за границы массива */
 {
 private:
+   unsigned long int used; 
    static int n_members; // Подсчет числа экземпляров класса, у класса введены ограничения N_MEMEBERS=10
+   
    char* buffer; //  Указатель на массив символов, содержащий строку;
    size_t line_len; // Длина строки	
    //  подсчет числа экземпляров класса
@@ -101,8 +103,10 @@ public:
         Smart_string operator+(char *str); // Есть
 	Smart_string operator+(Smart_string str);
 	Smart_string operator=(char *str);
-	Smart_string operator=(Smart_string str);
-
+	Smart_string* operator=(Smart_string &str);
+        Smart_string refObj();
+        
+        void setBuffer(const char *);
 	// операторы сравнения
         bool operator == (Smart_string str);
 	bool operator > (Smart_string str);
