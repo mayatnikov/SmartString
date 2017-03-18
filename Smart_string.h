@@ -102,8 +102,7 @@ public:
     // Для класса Smart_string должны быть переопределены операции: +,+=,<,>,<, <=, >=, ==, !=.
         Smart_string operator+(char *str); // Есть
 	Smart_string operator+(Smart_string str);
-	Smart_string operator=(char *str);
-	Smart_string* operator=(Smart_string &str);
+        Smart_string operator=(char *);
         Smart_string* refObj();
         
         void setBuffer(const char *);
@@ -115,6 +114,9 @@ public:
 	bool operator >=(Smart_string str);
 	bool operator != (Smart_string str);
 
+        bool fwrite (const char *file_name );
+        bool fread (const char * file_name);
+        
 	SS substring(size_t pos1, size_t pos2);
         Smart_string operator[](size_t pos);
         Smart_string operator()(size_t pos1, size_t pos2);

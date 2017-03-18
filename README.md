@@ -1,11 +1,14 @@
-**********************************
-** Памятка по работе с проектом
-**********************************
-Проект ведется в репозитории git
-команды для работы с репозиторием
-git clone ssh://nbk2/d2/git-repository/Smart_string.git
-git commit -m "Пояснения"
-git push git clone ssh://nbk2/d2/git-repository/Smart_string.git
-git pull git clone ssh://nbk2/d2/git-repository/Smart_string.git
+Это работа Бельской Александры
+Примеры методов класса для работы со строками
 
-TODO: Написать про работу из NetBeans 
+для компиляции программы должны быть установлены
+- gcc
+- make
+
+выполнить: 
+    make clean
+    make all
+    ./test data.txt "Это тестовая строка"
+
+
+ 

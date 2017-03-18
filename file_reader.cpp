@@ -15,6 +15,22 @@ using namespace std;
 
 */
 
+bool write_to_file(const char *file_name, char *str) {
+      ofstream myfile (file_name);
+  if (myfile.is_open())
+  {
+    myfile << "---------- This is a first line.\n";
+    myfile << str;
+    myfile << "---------- This is last line.\n";
+    myfile.close();
+    return true;
+  }
+  else {
+      cout << "Ошибка записи в файл";
+      return false;
+  }
+}
+
 void ss_from_file(const char *file_name) 
 {
 	string str;
@@ -36,23 +52,18 @@ void ss_from_file(const char *file_name)
 	ss.print();
     }
 }
-
 void print_label() {
     const char *label = "label";
     string str;
     ifstream In(label);
-   
     cout << "------------------------------------------------------------" << endl;
- 
     if(!In.is_open()) 
     {
 	cout << ">>>>>>>>>>>>>>>>>>>>>> Smart_String <<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
-	
     }
     else while ( ! In.eof() ) 
     {
     	getline (In, str);
         cout << str << endl;
     }
-
 }

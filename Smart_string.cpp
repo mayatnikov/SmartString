@@ -74,9 +74,39 @@ SS::~Smart_string()
 {
     if(used>1) used--;
     else {
-        free(buffer);
+        if(buffer!=NULL) free(buffer);
         dec();
     }
+}
+
+bool SS::fread(const char *fnm) {
+    ifstream ifs(fnm);
+    if(!ifs.is_open()) 
+    {
+	cout << "Такого файла нет:" << fnm << endl;
+	return false;
+    }
+    else {
+        string str;
+        getline(ifs,str);
+        this->setBuffer(str.c_str());
+        ifs.close();
+        return true;
+    }
+}
+
+bool SS::fwrite(const char *fnm) {
+    ofstream myfile (fnm);
+  if (myfile.is_open())
+  {
+    myfile << buffer;
+    myfile.close();
+    return true;
+  }
+  else {
+      cout << "Ошибка записи в файл";
+      return false;
+  }
 }
 
 char *SS::getValue() 
@@ -202,20 +232,15 @@ void SS::setBuffer(const char *str)
 		throw SSE("Operator = has very long input string");
 	}
 	else {
-		free( buffer)	;
+		if(buffer != NULL) free( buffer);
 		buffer = (char *)malloc(len+1);
                 strcpy(buffer,str);
+                line_len = len;
     	}
 }
 
-SS* SS::operator=(SS &obj) {
-    cout << "++++++++++++++";
-    obj.used++;
-    return &obj;
-}
 
 SS* SS::refObj() {
-    cout << "+++++++---+++++++";
     used++;
     return  this;
 }
