@@ -257,6 +257,21 @@ void test9() {
        
 }
 
+void test10() {
+    tst("test10()","Проверка метода c_str()");
+    SS s1("1234567890");
+    char *answer;
+    answer = s1.c_str();
+    if(s1==answer) {
+        cout << "c_str() работает правильно";
+    }
+    else {
+        cerr << "данные в ответе c_str() не совпадают с оригиналом"<<endl;
+    }
+    if(answer!=NULL) free(answer);
+    
+}
+
 
 int main(int argc, char* argv[]) { 
 	
@@ -299,6 +314,7 @@ int main(int argc, char* argv[]) {
  
 
  test9();  // проверка ссылки нескольких объектов на одну сроку
+ test10(); // проверка работы c_str()
 
  cout << "Конец работы программы\n";
  return 0; 

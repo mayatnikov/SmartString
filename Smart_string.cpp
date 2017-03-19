@@ -114,6 +114,14 @@ char *SS::getValue()
 	return buffer;
 } 
 
+char *SS::c_str() {
+    char *str;
+    str = (char *)malloc(line_len+1);
+    strcpy(str,buffer);
+    return str;
+}
+
+
 size_t SS::getLen() {
 	return line_len;
 }

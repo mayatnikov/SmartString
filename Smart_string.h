@@ -124,7 +124,8 @@ public:
 	int compare(const char *str); // Сравнение со строкой
 	int compare(Smart_string str); // Сравнение со строкой
 	void show_str(); // печать строки
-	char *getValue(); // return buffer value ref
+	char *getValue(); // возвращает ссылку на бувфер с строкой
+        char *c_str();  // возвращает ссылку на выделенную память с копией буфера 
 	void print();
 	size_t getLen();  // длина строки
 //	Smart_string ReadFile();  // чтение из файла строк
