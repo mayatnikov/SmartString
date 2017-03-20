@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <iostream>
 #include <cstdio>
 #include <stdexcept>
@@ -37,12 +39,12 @@ void SS::check_members() {
 
 SS::Smart_string() 
 {
-    used=1;
-    check_members();
-    buffer = (char *)malloc(1);
-    strcpy(buffer,"");
-    line_len=strlen("");
-    inc();
+//    used=1;
+//    check_members();
+//    buffer = (char *)malloc(1);
+//    strcpy(buffer,"");
+//    line_len=strlen("");
+//    inc();
 }
 
 SS::SS(const Smart_string &ss) {
@@ -109,7 +111,7 @@ bool SS::fwrite(const char *fnm) {
   }
 }
 
-char *SS::getValue() 
+const char *SS::getValue() 
 {
 	return buffer;
 } 
@@ -183,36 +185,13 @@ bool SS::operator>(SS ss) // Сравнение 2 строк - объектов 
 }
 
 // Конкатенация строки с завершающим нулем
-SS SS::operator+(char *str)
+SS SS::operator+(const char *str)
 {
 	char buf[MAXLEN];
 	strcpy(buf,getValue());
 	strcat(buf,str);
  Smart_string temp(buf);
  return temp;
-}
-
-// клонирует строку
-SS SS::multiply(int mult)
-{
-  char *ptr = (char *)malloc (line_len*mult+1);
-  strcpy(ptr,"");
-  cout << "Цикл умножения строки длина:";
-  for(int tik=0;tik<mult;tik++) {
-	strcat(ptr,buffer);
-	cout << "|"<< strlen(ptr);
-  }
-  cout << endl;
- SS temp(ptr);
- free (ptr);
- return temp;
-  /*  SS tmp("");
-      return tmp; */
-}
-
-// Умножение строк
-SS SS::operator*(int mult) {
-    return multiply(mult);
 }
 
 // Конкатенация объектов класса
@@ -230,6 +209,79 @@ SS SS::operator+(Smart_string str)
  	return temp;
 }
 
+SS SS::operator+(int i)
+{
+	char buf[MAXLEN];
+	char buf2[MAXLEN];
+	strcpy(buf,getValue());
+        sprintf(buf2,"%d",i);
+	strcat(buf,buf2);
+ Smart_string temp(buf);
+ return temp;
+}
+
+SS SS::operator+=(const char *add)
+{
+	char buf[MAXLEN];
+	size_t len=line_len+strlen(add); 
+	if (len > MAXLEN) {
+		fprintf( stderr, "Сумма длин строк ( %lu  ) длинней допустимых %d  симвлов - не обрабатываем! \n", len, MAXLEN);
+		throw SSE("Превышение максимально допустимой длины строки");
+	}
+	strcpy(buf,getValue());
+	strcat(buf,add);
+ 	setBuffer(buf);
+ 	return *this;
+}
+
+SS SS::operator+=(SS ss)
+{
+	char buf[MAXLEN];
+	size_t len=line_len+ss.line_len; 
+	if (len > MAXLEN) {
+		fprintf( stderr, "Сумма длин строк ( %lu  ) длинней допустимых %d  симвлов - не обрабатываем! \n", len, MAXLEN);
+		throw SSE("Превышение максимально допустимой длины строки");
+	}
+	strcpy(buf,getValue());
+	strcat(buf,ss.getValue());
+ 	setBuffer(buf);
+ 	return *this;
+}
+
+SS SS::operator+=(char ch)
+{
+	char buf[MAXLEN];
+	strcpy(buf,getValue());
+	sprintf(buf,"%s%c",getValue(),ch);
+ 	setBuffer(buf);
+ 	return *this;
+}
+
+
+
+// клонирует строку
+SS SS::multiply(int mult)
+{
+  char *ptr = (char *)malloc (line_len*mult+1);
+  strcpy(ptr,"");
+//  cout << "Цикл умножения строки длина:";
+  for(int tik=0;tik<mult;tik++) {
+	strcat(ptr,buffer);
+//	cout << "|"<< strlen(ptr);
+  }
+  cout << endl;
+ SS temp(ptr);
+ free (ptr);
+ return temp;
+  /*  SS tmp("");
+      return tmp; */
+}
+
+
+// Умножение строк
+SS SS::operator*(int mult) {
+    return multiply(mult);
+}
 
 // Замена содержимого buffer Smart_строки
 void SS::setBuffer(const char *str)
@@ -255,7 +307,7 @@ SS* SS::refObj() {
 
 
 // Присваивание строки с завершающим нулем
-SS SS::operator=(char *str)
+SS SS::operator=(const char *str)
 {
 	size_t len = strlen(str);
 	if(strlen(str) > MAXLEN) {
@@ -263,13 +315,21 @@ SS SS::operator=(char *str)
 		throw SSE("Operator = has very long input string");
 	}
 	else {
-		free( buffer)	;
-		Smart_string temp(str);
-		return(temp);
+            setBuffer(str);
+	    return *this;
 	}
 	SS err;
 	return err;
 }
+
+// Присваивание строки 
+SS SS::operator=(SS ss)
+{
+    this->setBuffer(ss.getValue());
+    return *this;
+}
+
+
 
 void SS::print() 
 {

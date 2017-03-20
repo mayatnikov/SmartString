@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -std=c++11 -g
 LDFLAGS=
-SOURCES=main.cpp Smart_string.cpp file_reader.cpp
+SOURCES=main.cpp Smart_string.cpp file_reader.cpp tests.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=test
 

@@ -73,7 +73,7 @@ str1.print(stdout);
 #include <fstream>
 using namespace std;
 
-#define MAXLEN 2000   // используем ВЕЗДЕ ! 
+#define MAXLEN 20000   // используем ВЕЗДЕ ! 
 #define SS Smart_string // в какой то момент мне надоело писать  Smart_string
 #define SSE Smart_string_exception  // просто что бы короче писать
 #define N_MEMBERS 50  // максимальное число экземпляров класса, при превышении - exception
@@ -100,9 +100,15 @@ public:
     static void check_members();
 
     // Для класса Smart_string должны быть переопределены операции: +,+=,<,>,<, <=, >=, ==, !=.
-        Smart_string operator+(char *str); // Есть
+        Smart_string operator+(const char *str); // Есть
+        Smart_string operator+(int i); // Есть
 	Smart_string operator+(Smart_string str);
-        Smart_string operator=(char *);
+        Smart_string operator+=(const char *); // Есть
+        Smart_string operator+=(SS ss); // Есть
+        Smart_string operator+=(char s); // Есть
+        
+        Smart_string operator=(const char *);
+        Smart_string operator=(SS ss);
         Smart_string* refObj();
         
         void setBuffer(const char *);
@@ -124,7 +130,7 @@ public:
 	int compare(const char *str); // Сравнение со строкой
 	int compare(Smart_string str); // Сравнение со строкой
 	void show_str(); // печать строки
-	char *getValue(); // возвращает ссылку на бувфер с строкой
+	const char *getValue(); // возвращает ссылку на буфер с строкой
         char *c_str();  // возвращает ссылку на выделенную память с копией буфера 
 	void print();
 	size_t getLen();  // длина строки
@@ -134,3 +140,15 @@ public:
 };
 void ss_from_file(const char *file_name);
 void print_label();
+void test0();
+void test1();
+void test2();
+void test3();
+void test4();
+void test5(const char *file, const char *instr);
+void test6();
+void test6wex(); 
+void test7();
+void test8();
+void test9();
+void test10();
