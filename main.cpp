@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
     r3.print();
     
 Smart_string str1, str2("lalala");
+// const Smart_string str("Const"); - не работает !
 Smart_string str("Const");
 
 str1=str+20*str2+str(0,2)+str[3];
@@ -47,25 +48,11 @@ str1+='\n';
 str1+="Ну и с новой строчки";
 str1+="2+("+str2+")+3";
 str1.print(stdout);
-
-//
-//    Smart_string str1, str2("lalala");
-//    // const 
-//    Smart_string str("Const");
-//    str1=str2*500;
-//    str1.print();
-//    
-//    str1=str+str2*500+str(0,2)+str[3];
-//    str1+='\n';
-//    str1+="Ну и с новой строчки:";
-//    str1+="2+(";
-//    str1+=str2+")+3";
-//    str1.print();
 // ------------------ end of MASTER TEST
         
         
  // это тесты того что сделано
-bool doTests=true;
+bool doTests=false;
 
 if(doTests) {
  test0();
