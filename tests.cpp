@@ -126,12 +126,13 @@ void test5(const char *file, const char *instr) {
     SS outss;
     
     tst("test5()","запись и чтение файла");
-    inss.print();
-    outss.print();
+    printf("File:=%s | String=%s \n",file,instr);
+    cout<<"Было:"; inss.print();
+    cout<<"Было:"; outss.print();
  
     if(inss.fwrite(file)) {
         cout << "Запись в файл:" << file << " - выполнена" << endl;
-        cout << "inss:"; inss.print();
+        cout << "вот это записали inss:"; inss.print();
         if(outss.fread(file)) {
             if( inss == outss ) cout << "Прочитанные данные идентичны записанным" << endl;
             else { 

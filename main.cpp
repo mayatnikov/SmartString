@@ -28,31 +28,44 @@ int main(int argc, char* argv[]) {
 // ----------------- MASTER TEST
     SS s1("abcd"),s2("1234");
     SS r1;
-    r1 = s1+"|"+s2;
+    r1 = s1+s2;
     r1.print();
     
     SS r2;
-    r2=SS("val1 ")+"val2";
+    r2="xxxxxxx "+s2;
     r2.print();
 
-    Smart_string str1, str2("lalala");
-    // const 
-    Smart_string str("Const");
-    str1=str2*500;
-    str1.print();
+    SS r3;
+    r3=s1+" xxxxxx";
+    r3.print();
     
-    str1=str+str2*500+str(0,2)+str[3];
-    str1+='\n';
-    str1+="Ну и с новой строчки";
-    str1+="2+(";
-    str1+=str2+")+3";
-    str1.print();
+Smart_string str1, str2("lalala");
+Smart_string str("Const");
+
+str1=str+20*str2+str(0,2)+str[3];
+str1+='\n';
+str1+="Ну и с новой строчки";
+str1+="2+("+str2+")+3";
+str1.print(stdout);
+
+//
+//    Smart_string str1, str2("lalala");
+//    // const 
+//    Smart_string str("Const");
+//    str1=str2*500;
+//    str1.print();
+//    
+//    str1=str+str2*500+str(0,2)+str[3];
+//    str1+='\n';
+//    str1+="Ну и с новой строчки:";
+//    str1+="2+(";
+//    str1+=str2+")+3";
+//    str1.print();
 // ------------------ end of MASTER TEST
         
- 
         
  // это тесты того что сделано
-bool doTests=false;
+bool doTests=true;
 
 if(doTests) {
  test0();

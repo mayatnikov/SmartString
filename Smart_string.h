@@ -36,13 +36,13 @@
 
 Далее приведены несколько выражений, которые должны быть верны:
 
-Smart_string str1, str2(«lalala»);
-const Smart_string str(«Const»);
+Smart_string str1, str2("lalala");
+const Smart_string str("Const");
 
 str1=str+500*str2+str(0,2)+str[3];
 str1+='\n';
-str1+=»Ну и с новой строчки»;
-str1+=»2+(»+str2+»)+3»
+str1+="Ну и с новой строчки";
+str1+="2+("+str2+")+3";
 str1.print(stdout);
 
 Требуется реализовать программу в файле test.cpp.  Реализации классов должны быть в отдельном файле. 
@@ -101,6 +101,8 @@ public:
 
     // Для класса Smart_string должны быть переопределены операции: +,+=,<,>,<, <=, >=, ==, !=.
         Smart_string operator+(const char *str); // Есть
+        
+        friend SS operator+(const char *s, SS &ss);
         Smart_string operator+(int i); // Есть
 	Smart_string operator+(Smart_string str);
         Smart_string operator+=(const char *); // Есть
@@ -127,17 +129,20 @@ public:
         Smart_string operator[](size_t pos);
         Smart_string operator()(size_t pos1, size_t pos2);
 	Smart_string operator*(int );
+        friend SS operator*(int, SS &);
 	int compare(const char *str); // Сравнение со строкой
 	int compare(Smart_string str); // Сравнение со строкой
 	void show_str(); // печать строки
 	const char *getValue(); // возвращает ссылку на буфер с строкой
         char *c_str();  // возвращает ссылку на выделенную память с копией буфера 
 	void print();
+        void print(FILE *stream);
 	size_t getLen();  // длина строки
 //	Smart_string ReadFile();  // чтение из файла строк
 //        Smart_string Increm(SS str, int n);
 	Smart_string multiply(int n); // размножить строку	
 };
+
 void ss_from_file(const char *file_name);
 void print_label();
 void test0();

@@ -41,9 +41,9 @@ SS::Smart_string()
 {
 //    used=1;
 //    check_members();
-//    buffer = (char *)malloc(1);
-//    strcpy(buffer,"");
-//    line_len=strlen("");
+    buffer = (char *) malloc(1);
+    strcpy(buffer,"");
+    line_len=0;
 //    inc();
 }
 
@@ -81,6 +81,7 @@ SS::~Smart_string()
     }
 }
 
+
 bool SS::fread(const char *fnm) {
     ifstream ifs(fnm);
     if(!ifs.is_open()) 
@@ -96,6 +97,8 @@ bool SS::fread(const char *fnm) {
         return true;
     }
 }
+
+
 
 bool SS::fwrite(const char *fnm) {
     ofstream myfile (fnm);
@@ -209,6 +212,16 @@ SS SS::operator+(Smart_string str)
  	return temp;
 }
 
+SS operator+(const char *s1,Smart_string &ss)
+{
+	char buf[MAXLEN];
+        strcpy(buf,s1);
+        strcat(buf,ss.buffer);
+        ss.setBuffer(buf);
+        return ss;
+}
+
+
 SS SS::operator+(int i)
 {
 	char buf[MAXLEN];
@@ -223,7 +236,7 @@ SS SS::operator+(int i)
 SS SS::operator+=(const char *add)
 {
 	char buf[MAXLEN];
-	size_t len=line_len+strlen(add); 
+	size_t len=line_len+strlen(add)+1; 
 	if (len > MAXLEN) {
 		fprintf( stderr, "Сумма длин строк ( %lu  ) длинней допустимых %d  симвлов - не обрабатываем! \n", len, MAXLEN);
 		throw SSE("Превышение максимально допустимой длины строки");
@@ -233,6 +246,7 @@ SS SS::operator+=(const char *add)
  	setBuffer(buf);
  	return *this;
 }
+
 
 SS SS::operator+=(SS ss)
 {
@@ -281,6 +295,11 @@ SS SS::multiply(int mult)
 // Умножение строк
 SS SS::operator*(int mult) {
     return multiply(mult);
+}
+
+SS operator*(int mult, SS &ss) {
+    return ss.multiply(mult);
+    
 }
 
 // Замена содержимого buffer Smart_строки
@@ -335,10 +354,16 @@ void SS::print()
 {
 	cout << "SS: val=["<< buffer << "] len=" << line_len << " used:"<< used <<  " n_members:" << n_members <<endl;
 }
+void SS::print(FILE *stream) {
+    fprintf(stream, "[%s]\n",buffer);
+}
 
 void SS::show_str() {
     cout << buffer;
 }
+
+
+
 
 // исползуется внутри класса ( но можно и во вне )
 SS SS::substring(size_t pos1, size_t pos2)
