@@ -58,14 +58,14 @@ str1.print(stdout);
  */
 
 /*
-	ВОПРОСЫ: 
-		1. Что значит "Строка должна содержать память только для одной копии объекта"? ->
+        ВОПРОСЫ: 
+                1. Что значит "Строка должна содержать память только для одной копии объекта"? ->
  * Для этого и нужно число копий строки - чтобы отслеживать выход за границы массива
-		2. Как конструировать строку из чисел? ->
+                2. Как конструировать строку из чисел? ->
  * Число превращается в строку
-		3. Как определить размер массива-строки? -> 
+                3. Как определить размер массива-строки? -> 
  * Динамически выделяется память под массив типа size.
-*/
+ */
 
 #include <iostream>
 #include <cstdio>
@@ -79,68 +79,71 @@ using namespace std;
 #define N_MEMBERS 50  // максимальное число экземпляров класса, при превышении - exception
 
 class Smart_string // Объект класса - строка
-/* В числе контроля за ошибками должен быть контроль выхода за границы массива */
-{
+/* В числе контроля за ошибками должен быть контроль выхода за границы массива */ {
 private:
-   unsigned long int used; 
-   static int n_members; // Подсчет числа экземпляров класса, у класса введены ограничения N_MEMEBERS=10
-   
-   char* buffer; //  Указатель на массив символов, содержащий строку;
-   size_t line_len; // Длина строки	
-   //  подсчет числа экземпляров класса
-   void inc();
-   void dec();    
-   
+    unsigned long int used;
+    static int n_members; // Подсчет числа экземпляров класса, у класса введены ограничения N_MEMEBERS=10
+
+    char* buffer; //  Указатель на массив символов, содержащий строку;
+    size_t line_len; // Длина строки	
+    //  подсчет числа экземпляров класса
+    void inc();
+    void dec();
+    SS op_plus(const Smart_string str) const;
+
 public:
     static int nget();
     Smart_string();
     Smart_string(const char *s);
+
     Smart_string(const Smart_string &);
     ~Smart_string();
     static void check_members();
 
     // Для класса Smart_string должны быть переопределены операции: +,+=,<,>,<, <=, >=, ==, !=.
-        Smart_string operator+(const char *str); // Есть
-        
-        friend SS operator+(const char *s, SS &ss);
-        Smart_string operator+(int i); // Есть
-	Smart_string operator+(Smart_string str);
-        Smart_string operator+=(const char *); // Есть
-        Smart_string operator+=(SS ss); // Есть
-        Smart_string operator+=(char s); // Есть
-        
-        Smart_string operator=(const char *);
-        Smart_string operator=(SS ss);
-        Smart_string* refObj();
-        
-        void setBuffer(const char *);
-	// операторы сравнения
-        bool operator == (Smart_string str);
-	bool operator > (Smart_string str);
-	bool operator < (Smart_string str);
-	bool operator <= (Smart_string str);
-	bool operator >=(Smart_string str);
-	bool operator != (Smart_string str);
+    Smart_string operator+(const char *str) const;
+    friend SS operator+(const char *s, SS &ss);
+    Smart_string operator+(int i) const;
+    friend Smart_string operator+(int i, SS &ss);
+    Smart_string operator+(const Smart_string str) const;
 
-        bool fwrite (const char *file_name );
-        bool fread (const char * file_name);
-        
-	SS substring(size_t pos1, size_t pos2);
-        Smart_string operator[](size_t pos);
-        Smart_string operator()(size_t pos1, size_t pos2);
-	Smart_string operator*(int );
-        friend SS operator*(int, SS &);
-	int compare(const char *str); // Сравнение со строкой
-	int compare(Smart_string str); // Сравнение со строкой
-	void show_str(); // печать строки
-	const char *getValue(); // возвращает ссылку на буфер с строкой
-        char *c_str();  // возвращает ссылку на выделенную память с копией буфера 
-	void print();
-        void print(FILE *stream);
-	size_t getLen();  // длина строки
-//	Smart_string ReadFile();  // чтение из файла строк
-//        Smart_string Increm(SS str, int n);
-	Smart_string multiply(int n); // размножить строку	
+    Smart_string operator+=(const char *);
+    Smart_string operator+=(SS &ss);
+    Smart_string operator+=(SS ss);
+    Smart_string operator+=(char s);
+
+    Smart_string operator=(const char *);
+    Smart_string operator=(SS ss);
+    Smart_string* refObj();
+
+    void setBuffer(const char *);
+    // операторы сравнения
+    bool operator==(Smart_string str);
+    bool operator>(Smart_string str);
+    bool operator<(Smart_string str);
+    bool operator<=(Smart_string str);
+    bool operator>=(Smart_string str);
+    bool operator!=(Smart_string str);
+
+    bool fwrite(const char *file_name);
+    bool fread(const char * file_name);
+
+    SS substring(size_t pos1, size_t pos2) const;
+    Smart_string operator[](size_t pos) const;
+    Smart_string operator()(size_t pos1, size_t pos2) const;
+    Smart_string operator*(int);
+    friend SS operator*(int, SS &);
+    int compare(const char *str); // Сравнение со строкой
+    int compare(Smart_string str); // Сравнение со строкой
+    void show_str(); // печать строки
+    const char *getValue(); // возвращает ссылку на буфер с строкой
+    char *c_str(); // возвращает ссылку на выделенную память с копией буфера 
+    void print() const;
+    void print(FILE *stream);
+    size_t getLen(); // длина строки
+    //	Smart_string ReadFile();  // чтение из файла строк
+    //        Smart_string Increm(SS str, int n);
+    Smart_string multiply(int n); // размножить строку	
 };
 
 void ss_from_file(const char *file_name);
@@ -152,7 +155,7 @@ void test3();
 void test4();
 void test5(const char *file, const char *instr);
 void test6();
-void test6wex(); 
+void test6wex();
 void test7();
 void test8();
 void test9();

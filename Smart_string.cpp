@@ -188,29 +188,36 @@ bool SS::operator>(SS ss) // Сравнение 2 строк - объектов 
 }
 
 // Конкатенация строки с завершающим нулем
-SS SS::operator+(const char *str)
+SS SS::operator+(const char *str) const
 {
 	char buf[MAXLEN];
-	strcpy(buf,getValue());
-	strcat(buf,str);
- Smart_string temp(buf);
- return temp;
+	strcpy(buf,str);
+	strcat(buf,buffer);
+     Smart_string temp(buf);
+    return temp;
 }
 
-// Конкатенация объектов класса
-SS SS::operator+(Smart_string str)
-{
+
+SS SS::op_plus(const Smart_string str) const {
 	char buf[MAXLEN];
 	size_t len=line_len+str.line_len; 
 	if (len > MAXLEN) {
 		fprintf( stderr, "Сумма длин строк ( %lu  ) длинней допустимых %d  симвлов - не обрабатываем! \n", len, MAXLEN);
 		throw SSE("Превышение максимально допустимой длины строки");
 	}
-	strcpy(buf,getValue());
-	strcat(buf,str.getValue());
+	strcpy(buf,buffer);
+	strcat(buf,str.buffer);
  	SS temp(buf);
  	return temp;
+    
 }
+// Конкатенация объектов класса
+SS SS::operator+(const Smart_string str) const
+{
+    const SS s2(op_plus(str));
+    return s2;
+}
+
 
 SS operator+(const char *s1,Smart_string &ss)
 {
@@ -222,16 +229,28 @@ SS operator+(const char *s1,Smart_string &ss)
 }
 
 
-SS SS::operator+(int i)
+SS SS::operator+(int i) const
 {
 	char buf[MAXLEN];
 	char buf2[MAXLEN];
-	strcpy(buf,getValue());
+	strcpy(buf,buffer);
         sprintf(buf2,"%d",i);
 	strcat(buf,buf2);
  Smart_string temp(buf);
  return temp;
 }
+
+SS operator+(int i, SS &ss)
+{
+	char buf[MAXLEN];
+	char buf2[MAXLEN];
+        sprintf(buf,"%d",i);
+	strcpy(buf2,ss.buffer);
+	strcat(buf,buf2);
+ Smart_string temp(buf);
+ return temp;
+}
+
 
 SS SS::operator+=(const char *add)
 {
@@ -248,6 +267,20 @@ SS SS::operator+=(const char *add)
 }
 
 
+SS SS::operator+=(SS &ss)
+{
+	char buf[MAXLEN];
+	size_t len=line_len+ss.line_len; 
+	if (len > MAXLEN) {
+		fprintf( stderr, "Сумма длин строк ( %lu  ) длинней допустимых %d  симвлов - не обрабатываем! \n", len, MAXLEN);
+		throw SSE("Превышение максимально допустимой длины строки");
+	}
+	strcpy(buf,getValue());
+	strcat(buf,ss.getValue());
+ 	setBuffer(buf);
+ 	return *this;
+}
+
 SS SS::operator+=(SS ss)
 {
 	char buf[MAXLEN];
@@ -261,6 +294,8 @@ SS SS::operator+=(SS ss)
  	setBuffer(buf);
  	return *this;
 }
+
+
 
 SS SS::operator+=(char ch)
 {
@@ -344,13 +379,14 @@ SS SS::operator=(const char *str)
 // Присваивание строки 
 SS SS::operator=(SS ss)
 {
+    if(this == &ss) return *this;
     this->setBuffer(ss.getValue());
     return *this;
 }
 
 
 
-void SS::print() 
+void SS::print() const
 {
 	cout << "SS: val=["<< buffer << "] len=" << line_len << " used:"<< used <<  " n_members:" << n_members <<endl;
 }
@@ -366,7 +402,7 @@ void SS::show_str() {
 
 
 // исползуется внутри класса ( но можно и во вне )
-SS SS::substring(size_t pos1, size_t pos2)
+SS SS::substring(size_t pos1, size_t pos2) const
 {
     char tmp[MAXLEN];
 	char msg[MAXLEN];
@@ -382,7 +418,7 @@ SS SS::substring(size_t pos1, size_t pos2)
         pos = pos2 - pos1 +1; //  ЗАБЫЛА +1 !!!!
 	strncpy(tmp,&buffer[pos1], pos);
 	tmp[pos] ='\0';   // ВАЖНО:  строка в С всегда оканчивается двоичным 0 
-	SS temp(tmp);
+	const SS temp(tmp);
 	return temp;
 }
 
@@ -394,7 +430,7 @@ SS SS::substring(size_t pos1, size_t pos2)
 	объект Smart_string — ищется как подстрока и возвращается Smart_string,
          содержащая кусок от находки до конца строки;
  */ 
-SS SS::operator[](size_t pos)
+SS SS::operator[](size_t pos) const
 {
 	return substring(pos,line_len-1);
 }
@@ -405,6 +441,6 @@ SS SS::operator[](size_t pos)
      (str(«1234567890») и затем str(3,7) вернёт Smart_string «45678»).
  */
 
-SS SS::operator()(size_t pos1, size_t pos2) {
+SS SS::operator()(size_t pos1, size_t pos2) const  {
     return substring(pos1,pos2);
 }
